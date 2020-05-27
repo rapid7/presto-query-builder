@@ -5,6 +5,10 @@
     <groupId>com.rapid7.presto</groupId>
     <artifactId>presto-query-builder</artifactId>
     <version>0.0.24-SNAPSHOT</version>
+    
+    <name>presto-query-builder</name>
+    <description>A Java library that will help you create queries for Presto programmatically. This will help you test your code and create dynamic queries.</description>
+    <url>https://github.com/rapid7/presto-query-builder</url>
 
     <organization>
         <name>Rapid 7, Inc.</name>
