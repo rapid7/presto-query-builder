@@ -36,21 +36,21 @@ public class WithSelectBuilder implements SelectBuilder {
   }
 
   @Override
-  public SelectBuilder conditionalSelect(boolean condition, boolean isDistinct, ProjectionBuilder... projections) {
+  public WithSelectBuilder conditionalSelect(boolean condition, boolean isDistinct, ProjectionBuilder... projections) {
     basicSelectBuilder.conditionalSelect(condition, isDistinct, projections);
 
     return this;
   }
 
   @Override
-  public SelectBuilder projection(ProjectionBuilder projection) {
+  public WithSelectBuilder projection(ProjectionBuilder projection) {
     basicSelectBuilder.projection(projection);
 
     return this;
   }
 
   @Override
-  public SelectBuilder conditionalProjection(boolean condition, ProjectionBuilder projection) {
+  public WithSelectBuilder conditionalProjection(boolean condition, ProjectionBuilder projection) {
     basicSelectBuilder.conditionalProjection(condition, projection);
 
     return this;
@@ -150,14 +150,14 @@ public class WithSelectBuilder implements SelectBuilder {
   }
 
   @Override
-  public SelectBuilder group(GroupBuilder group) {
+  public WithSelectBuilder group(GroupBuilder group) {
     basicSelectBuilder.group(group);
 
     return this;
   }
 
   @Override
-  public SelectBuilder conditionalGroup(boolean condition, GroupBuilder group) {
+  public WithSelectBuilder conditionalGroup(boolean condition, GroupBuilder group) {
     basicSelectBuilder.conditionalGroup(condition, group);
 
     return this;
