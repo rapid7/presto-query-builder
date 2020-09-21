@@ -20,18 +20,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 
 class BasicSelectBuilder implements SelectBuilder {
   private final List<Relation> queries = new ArrayList<>();
 
   private boolean isDistinctProjections;
-  private ProjectionBuilder[] projections;
+  private List<ProjectionBuilder> projections;
   private RelationBuilder relation;
   private List<JoinItem> joins = new ArrayList<>();
   private ExpressionBuilder where;
   private boolean isDistinctGroups;
-  private GroupBuilder[] groups;
+  private List<GroupBuilder> groups;
   private ExpressionBuilder having;
   private SortBuilder[] sorts;
   private String limit;
@@ -44,11 +45,34 @@ class BasicSelectBuilder implements SelectBuilder {
   }
 
   @Override
-  public BasicSelectBuilder select(boolean isDistinct, ProjectionBuilder... projections) {
-    this.isDistinctProjections = isDistinct;
-    this.projections = projections;
+  public SelectBuilder projection(ProjectionBuilder projection) {
+    if (isNull(this.projections)) {
+      this.projections = new ArrayList<>();
+    }
+
+    this.projections.add(projection);
 
     return this;
+  }
+
+  @Override
+  public SelectBuilder conditionalProjection(boolean condition, ProjectionBuilder projection) {
+    return condition ? projection(projection) : this;
+  }
+
+  @Override
+  public BasicSelectBuilder select(boolean isDistinct, ProjectionBuilder... projections) {
+    this.isDistinctProjections = isDistinct;
+    this.projections = nonNull(projections) ? Stream.of(projections).collect(toList()) : null;
+
+    return this;
+  }
+
+  @Override
+  public SelectBuilder conditionalSelect(
+      boolean condition, boolean isDistinct, ProjectionBuilder... projections
+  ) {
+    return condition ? select(isDistinct, projections) : this;
   }
 
   @Override
@@ -60,11 +84,7 @@ class BasicSelectBuilder implements SelectBuilder {
 
   @Override
   public BasicSelectBuilder conditionalFrom(boolean condition, RelationBuilder relation) {
-    if (condition) {
-      return from(relation);
-    }
-
-    return this;
+    return condition ? from(relation) : this;
   }
 
   @Override
@@ -81,11 +101,7 @@ class BasicSelectBuilder implements SelectBuilder {
       RelationBuilder right,
       ExpressionBuilder on
   ) {
-    if (condition) {
-      return join(type, right, on);
-    }
-
-    return this;
+    return condition ? join(type, right, on) : this;
   }
 
   @Override
@@ -97,11 +113,7 @@ class BasicSelectBuilder implements SelectBuilder {
 
   @Override
   public BasicSelectBuilder conditionalWhere(boolean condition, ExpressionBuilder expression) {
-    if (condition) {
-      where(expression);
-    }
-
-    return this;
+    return condition ? where(expression) : this;
   }
 
   @Override
@@ -117,11 +129,7 @@ class BasicSelectBuilder implements SelectBuilder {
 
   @Override
   public BasicSelectBuilder conditionalAnd(boolean condition, ExpressionBuilder expression) {
-    if (condition) {
-      and(expression);
-    }
-
-    return this;
+    return condition ? and(expression) : this;
   }
 
   @Override
@@ -137,17 +145,13 @@ class BasicSelectBuilder implements SelectBuilder {
 
   @Override
   public BasicSelectBuilder conditionalOr(boolean condition, ExpressionBuilder expression) {
-    if (condition) {
-      or(expression);
-    }
-
-    return this;
+    return condition ? or(expression) : this;
   }
 
   @Override
   public BasicSelectBuilder groupBy(boolean isDistinct, GroupBuilder... groups) {
     this.isDistinctGroups = isDistinct;
-    this.groups = groups;
+    this.groups = nonNull(groups) ? Stream.of(groups).collect(toList()) : null;
 
     return this;
   }
@@ -158,11 +162,23 @@ class BasicSelectBuilder implements SelectBuilder {
       boolean isDistinct,
       GroupBuilder... groups
   ) {
-    if (condition) {
-      return groupBy(isDistinct, groups);
+    return condition ? groupBy(isDistinct, groups) : this;
+  }
+
+  @Override
+  public SelectBuilder group(GroupBuilder group) {
+    if (isNull(groups)){
+      groups = new ArrayList<>();
     }
 
+    groups.add(group);
+
     return this;
+  }
+
+  @Override
+  public SelectBuilder conditionalGroup(boolean condition, GroupBuilder group) {
+    return condition ? group(group) : this;
   }
 
   @Override
@@ -187,13 +203,13 @@ class BasicSelectBuilder implements SelectBuilder {
   }
 
   private void completeQuery() {
-    if (null == projections) {
+    if (isNull(projections)) {
       throw new UnsupportedOperationException("You must specify a select to complete this query");
     }
 
     Select select = new Select(
         isDistinctProjections,
-        Stream.of(projections).map(ProjectionBuilder::build).collect(toList())
+        projections.stream().map(ProjectionBuilder::build).collect(toList())
     );
 
     Optional<Relation> from = Optional.empty();
@@ -226,7 +242,7 @@ class BasicSelectBuilder implements SelectBuilder {
       groupBy = Optional.of(
           new GroupBy(
               isDistinctGroups,
-              Stream.of(groups).map(GroupBuilder::build).collect(toList())
+              groups.stream().map(GroupBuilder::build).collect(toList())
           )
       );
     }

@@ -2,7 +2,10 @@ package com.rapid7.presto;
 
 public interface SelectBuilder {
   SelectBuilder union();
-  SelectBuilder select(boolean isDistinct, ProjectionBuilder... selectItems);
+  SelectBuilder select(boolean isDistinct, ProjectionBuilder... projections);
+  SelectBuilder conditionalSelect(boolean condition, boolean isDistinct, ProjectionBuilder... projections);
+  SelectBuilder projection(ProjectionBuilder projection);
+  SelectBuilder conditionalProjection(boolean condition, ProjectionBuilder projection);
   SelectBuilder from(RelationBuilder from);
   SelectBuilder conditionalFrom(boolean condition, RelationBuilder from);
   SelectBuilder join(JoinType type, RelationBuilder right, ExpressionBuilder on);
@@ -14,6 +17,8 @@ public interface SelectBuilder {
   SelectBuilder or(ExpressionBuilder expression);
   SelectBuilder conditionalOr(boolean condition, ExpressionBuilder expression);
   SelectBuilder groupBy(boolean isDistinct, GroupBuilder... groups);
+  SelectBuilder group(GroupBuilder group);
+  SelectBuilder conditionalGroup(boolean condition, GroupBuilder group);
   SelectBuilder conditionalGroupBy(boolean condition, boolean isDistinct, GroupBuilder... groups);
   SelectBuilder having(ExpressionBuilder having);
   SelectBuilder orderBy(SortBuilder... sorts);
