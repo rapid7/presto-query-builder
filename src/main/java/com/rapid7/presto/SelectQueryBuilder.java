@@ -46,21 +46,21 @@ public class SelectQueryBuilder implements QueryBuilder, SelectBuilder {
   }
 
   @Override
-  public SelectBuilder conditionalSelect(boolean condition, boolean isDistinct, ProjectionBuilder... projections) {
+  public SelectQueryBuilder conditionalSelect(boolean condition, boolean isDistinct, ProjectionBuilder... projections) {
     basicSelectBuilder.conditionalSelect(condition, isDistinct, projections);
 
     return this;
   }
 
   @Override
-  public SelectBuilder projection(ProjectionBuilder projection) {
+  public SelectQueryBuilder projection(ProjectionBuilder projection) {
     basicSelectBuilder.projection(projection);
 
     return this;
   }
 
   @Override
-  public SelectBuilder conditionalProjection(boolean condition, ProjectionBuilder projection) {
+  public SelectQueryBuilder conditionalProjection(boolean condition, ProjectionBuilder projection) {
     basicSelectBuilder.conditionalProjection(condition, projection);
 
     return this;
@@ -160,14 +160,14 @@ public class SelectQueryBuilder implements QueryBuilder, SelectBuilder {
   }
 
   @Override
-  public SelectBuilder group(GroupBuilder group) {
+  public SelectQueryBuilder group(GroupBuilder group) {
     basicSelectBuilder.group(group);
 
     return this;
   }
 
   @Override
-  public SelectBuilder conditionalGroup(boolean condition, GroupBuilder group) {
+  public SelectQueryBuilder conditionalGroup(boolean condition, GroupBuilder group) {
     basicSelectBuilder.conditionalGroup(condition, group);
 
     return this;
