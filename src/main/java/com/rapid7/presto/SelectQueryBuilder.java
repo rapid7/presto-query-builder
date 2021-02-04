@@ -11,6 +11,7 @@ import com.facebook.presto.sql.tree.With;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import static java.util.stream.Collectors.toList;
 
 public class SelectQueryBuilder implements QueryBuilder, SelectBuilder {
@@ -190,6 +191,13 @@ public class SelectQueryBuilder implements QueryBuilder, SelectBuilder {
   @Override
   public SelectQueryBuilder limit(String limit) {
     basicSelectBuilder.limit(limit);
+
+    return this;
+  }
+
+  @Override
+  public SelectQueryBuilder chain(Function<SelectBuilder, Void> chain) {
+    chain.apply(this);
 
     return this;
   }

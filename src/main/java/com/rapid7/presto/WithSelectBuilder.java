@@ -9,6 +9,7 @@ import com.facebook.presto.sql.tree.Identifier;
 import com.facebook.presto.sql.tree.Query;
 import com.facebook.presto.sql.tree.WithQuery;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class WithSelectBuilder implements SelectBuilder {
   private SelectQueryBuilder selectQueryBuilder;
@@ -180,6 +181,13 @@ public class WithSelectBuilder implements SelectBuilder {
   @Override
   public WithSelectBuilder limit(String limit) {
     basicSelectBuilder.limit(limit);
+
+    return this;
+  }
+
+  @Override
+  public WithSelectBuilder chain(Function<SelectBuilder, Void> chain) {
+    chain.apply(this);
 
     return this;
   }

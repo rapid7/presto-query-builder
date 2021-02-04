@@ -18,6 +18,7 @@ import com.facebook.presto.sql.tree.Union;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -202,6 +203,13 @@ class BasicSelectBuilder implements SelectBuilder {
     return this;
   }
 
+  @Override
+  public BasicSelectBuilder chain(Function<SelectBuilder, Void> chain) {
+    chain.apply(this);
+
+    return this;
+  }
+
   private void completeQuery() {
     if (isNull(projections)) {
       throw new UnsupportedOperationException("You must specify a select to complete this query");
@@ -297,9 +305,9 @@ class BasicSelectBuilder implements SelectBuilder {
   }
 
   private static class JoinItem {
-    private JoinType type;
-    private RelationBuilder right;
-    private ExpressionBuilder on;
+    private final JoinType type;
+    private final RelationBuilder right;
+    private final ExpressionBuilder on;
 
     private JoinItem(JoinType type, RelationBuilder right, ExpressionBuilder on) {
       this.type = type;

@@ -1,5 +1,7 @@
 package com.rapid7.presto;
 
+import java.util.function.Function;
+
 public interface SelectBuilder {
   SelectBuilder union();
   SelectBuilder select(boolean isDistinct, ProjectionBuilder... projections);
@@ -23,4 +25,5 @@ public interface SelectBuilder {
   SelectBuilder having(ExpressionBuilder having);
   SelectBuilder orderBy(SortBuilder... sorts);
   SelectBuilder limit(String limit);
+  SelectBuilder chain(Function<SelectBuilder, Void> chain);
 }
