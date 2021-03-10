@@ -41,6 +41,10 @@ public class QueryUtils {
     return new ReferenceBuilder(null, reference);
   }
 
+  public static ExpressionBuilder cast(String type, ExpressionBuilder expression) {
+    return new CastBuilder(type, expression);
+  }
+
   // Function Expressions
   public static ExpressionBuilder arbitrary(ExpressionBuilder expression) {
     return new FunctionBuilder("arbitrary", false, expression);
@@ -80,6 +84,26 @@ public class QueryUtils {
 
   public static ExpressionBuilder countIf(boolean isDistinct, ExpressionBuilder expression) {
     return new FunctionBuilder("count_if", isDistinct, expression);
+  }
+
+  public static ExpressionBuilder dateDiff(String unit, ExpressionBuilder leftExpression, ExpressionBuilder rightExpression) {
+    return new FunctionBuilder("date_diff", false, lit(unit), rightExpression, leftExpression);
+  }
+
+  public static ExpressionBuilder fromIso8601Date(ExpressionBuilder expression) {
+    return new FunctionBuilder("from_iso8601_date", false, expression);
+  }
+
+  public static ExpressionBuilder fromIso8601Timestamp(ExpressionBuilder expression) {
+    return new FunctionBuilder("from_iso8601_timestamp", false, expression);
+  }
+
+  public static ExpressionBuilder toIso8601(ExpressionBuilder expression) {
+    return new FunctionBuilder("to_iso8601", false, expression);
+  }
+
+  public static ExpressionBuilder fromUnixTime(ExpressionBuilder expression) {
+    return new FunctionBuilder("from_unixtime", false, expression);
   }
 
   public static ExpressionBuilder toUnixTime(ExpressionBuilder expression) {
