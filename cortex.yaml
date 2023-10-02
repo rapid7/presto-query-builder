@@ -1,0 +1,16 @@
+---
+info:
+  title: Presto Query Builder
+  description: Programmatically create presto queries
+  x-cortex-git:
+    github:
+      alias: r7org
+      repository: rapid7/presto-query-builder
+  x-cortex-tag: presto-query-builder
+  x-cortex-type: service
+  x-cortex-groups: []
+  x-cortex-domain-parents:
+  - tag: vm-data-services
+openapi: 3.0.1
+servers:
+- url: "/"
