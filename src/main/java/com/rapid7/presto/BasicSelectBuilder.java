@@ -225,7 +225,7 @@ class BasicSelectBuilder implements SelectBuilder {
       from = Optional.of(relation.build());
     }
 
-    if (!joins.isEmpty() && !from.isPresent()) {
+    if (!joins.isEmpty() && from.isEmpty()) {
       throw new UnsupportedOperationException("You cannot join before specifying a from.");
     }
 
