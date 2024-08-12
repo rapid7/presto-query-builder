@@ -8,7 +8,8 @@ info:
       repository: rapid7/presto-query-builder
   x-cortex-tag: presto-query-builder
   x-cortex-type: service
-  x-cortex-groups: []
+  x-cortex-groups:
+  - target:library
   x-cortex-domain-parents:
   - tag: vm-data-services
 openapi: 3.0.1
