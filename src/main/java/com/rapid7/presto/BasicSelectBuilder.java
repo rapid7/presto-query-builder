@@ -297,8 +297,9 @@ class BasicSelectBuilder implements SelectBuilder {
   public QueryBody build() {
     completeQuery();
 
+    Optional<Boolean> optionalFalse = Optional.of(false);
     if (queries.size() > 1) {
-      return new Union(queries, false);
+      return new Union(queries, optionalFalse);
     } else {
       return (QueryBody) queries.get(0);
     }
