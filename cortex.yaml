@@ -9,7 +9,7 @@ info:
   x-cortex-tag: presto-query-builder
   x-cortex-type: service
   x-cortex-groups:
-  - exposure:external-ship
+  - exposure:opensource
   - target:library
   x-cortex-domain-parents:
   - tag: vm-data-services
